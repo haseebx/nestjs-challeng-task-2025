@@ -8,6 +8,8 @@ import {
   Delete,
   HttpCode,
 } from '@nestjs/common';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,15 +19,21 @@ import { UserResponseDto } from './dto/user.response.dto';
 @Controller('users')
 @ApiTags('Users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    @InjectQueue('welcome') private readonly welcomeQueue: Queue
+  ) {}
 
   @Post()
   @HttpCode(200)
   @ApiOperation({ summary: 'Save user details' })
   @ApiOkResponse({ type: UserResponseDto })
-  create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
-    return this.usersService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
+    const user = await this.usersService.create(createUserDto);
+    await this.welcomeQueue.add('sendWelcomeMessage', { email: user.email });
+    return user;
   }
+
 
   @Get('all')
   @HttpCode(200)
