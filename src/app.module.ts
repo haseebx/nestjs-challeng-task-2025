@@ -20,9 +20,7 @@ import { BullModule } from '@nestjs/bull';
       },
     }),
     UsersModule,
-    BullModule.registerQueue({
-      name: 'welcome',
-    }),
+   
   ],
   controllers: [AppController],
   providers: [AppService],

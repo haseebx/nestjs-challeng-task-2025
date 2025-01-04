@@ -34,7 +34,6 @@ export class UsersController {
     return user;
   }
 
-
   @Get('all')
   @HttpCode(200)
   @ApiOperation({ summary: 'Get user details' })
