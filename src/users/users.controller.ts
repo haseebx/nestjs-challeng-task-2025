@@ -27,12 +27,21 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Get()
+  @Get('all')
   @HttpCode(200)
   @ApiOperation({ summary: 'Get user details' })
   @ApiOkResponse({ type: UserResponseDto })
   findAll(): Promise<UserResponseDto[]> {
     return this.usersService.findAll();
+  }
+
+
+  @Get('above-18')
+  @HttpCode(200)
+  @ApiOperation({ summary: 'Get user details' })
+  @ApiOkResponse({ type: UserResponseDto })
+  findAllBelowEigtheen(): Promise<UserResponseDto[]> {
+    return this.usersService.aboveAge();
   }
 
   @Get(':userId')

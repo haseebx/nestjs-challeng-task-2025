@@ -4,7 +4,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { IsNull, Repository } from 'typeorm';
+import { IsNull, MoreThan, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -47,6 +47,28 @@ export class UsersService {
     }
   }
 
+  async aboveAge(): Promise<UserResponseDto[]> {
+    try {
+      const users = await this.usersRepository.find({
+        where: {
+          deletedAt: IsNull(), // Ensures the user is not deleted
+          age: MoreThan(18), // Filters users older than 18
+        },
+        order: {
+          name: 'ASC', // Sorts users by name in ascending order
+        },
+      });
+
+      return users;
+    } catch (error) {
+      console.error('Failed to retrieve users', error);
+      throw new HttpException(
+        'Failed to retrieve users',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
   async findOne(userId: string): Promise<UserResponseDto> {
     try {
       const users = await this.usersRepository.findOne({
@@ -77,7 +99,9 @@ export class UsersService {
       }
       updateUserDto.updatedAt = new Date();
       await this.usersRepository.update(userId, updateUserDto);
-      const updatedUser = await this.usersRepository.findOne({ where: { userId } });
+      const updatedUser = await this.usersRepository.findOne({
+        where: { userId },
+      });
       if (!updatedUser) {
         throw new NotFoundException('User not found');
       }
