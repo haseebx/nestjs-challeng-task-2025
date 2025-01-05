@@ -4,7 +4,6 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api');
     // Swagger
     const config = new DocumentBuilder()
         .addBearerAuth()
@@ -17,5 +16,6 @@ async function bootstrap() {
     SwaggerModule.setup('api', app, document);
     await app.listen(process.env.PORT ?? 8000);
     console.log(`App is listening on http://localhost:8000/`);
+    console.log(`App Swegger is on http://localhost:8000/api`);
 }
 bootstrap();

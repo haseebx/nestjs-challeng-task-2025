@@ -19,6 +19,9 @@ import { BullModule } from '@nestjs/bull';
         port: Number(process.env.REDIS_PORT) || 6379,
       },
     }),
+    BullModule.registerQueue({
+      name: 'welcome',
+    }),
     UsersModule,
    
   ],
