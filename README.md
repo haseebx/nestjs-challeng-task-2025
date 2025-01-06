@@ -8,11 +8,8 @@ This document provides a step-by-step guide to setting up a NestJS project, conf
 # Install the NestJS CLI
 npm install -g @nestjs/cli
 
-# Create a new project
-nest new my-nestjs-app
-
 # Navigate into the project directory
-cd my-nestjs-app
+cd challange-task
 
 # Install project dependencies
 npm install

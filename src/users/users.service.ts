@@ -28,7 +28,10 @@ export class UsersService {
       return new UserResponseDto(newUser);
     } catch (error) {
       console.error('Failed to get database configuration', error);
-      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Failed to save user details in DB',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -43,7 +46,10 @@ export class UsersService {
       return users;
     } catch (error) {
       console.error('Failed to get database configuration', error);
-      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Failed to fetch the all users from DB',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -63,7 +69,7 @@ export class UsersService {
     } catch (error) {
       console.error('Failed to retrieve users', error);
       throw new HttpException(
-        'Failed to retrieve users',
+        'Failed to retrieve users above 18 years of age',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -81,7 +87,10 @@ export class UsersService {
       return users;
     } catch (error) {
       console.error('Failed to get database configuration', error);
-      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Failed to fetch user by userID',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -108,7 +117,10 @@ export class UsersService {
       return new UserResponseDto(updatedUser);
     } catch (error) {
       console.error('Failed to get database configuration', error);
-      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Failed to update the user by UserId',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 
@@ -124,7 +136,10 @@ export class UsersService {
       await this.usersRepository.save(user);
       return { msg: 'User deleted successfully' };
     } catch (err) {
-      throw new HttpException(err, HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Failed to delete user by userId',
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }
